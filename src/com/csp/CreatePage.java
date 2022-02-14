@@ -3,9 +3,7 @@ package com.csp;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author csp
@@ -37,9 +35,20 @@ public class CreatePage {
 
         List<File> fileList = new ArrayList<>();
         FileUtils.getFileList(basePath+markDownDirectory,fileList);
+
+        // 根据文件路径排序（由于md文件按日期分类其实是按日期排序）
+        fileList.sort(Comparator.comparing(File::getPath).reversed());
+
         for (File file:fileList){
             String fileName =  file.getName();
+            String suffix = FileUtils.getSuffix(file);
+            // 排除非md文件
+            if (!suffix.equals(".md")){
+                continue;
+            }
+
             fileName = fileName.substring(0,fileName.lastIndexOf("."));
+
             String filePath = file.getPath().replaceAll("\\\\","/");
             String relativePath = filePath.replace(basePath,"");
             Date date = new Date(file.lastModified());

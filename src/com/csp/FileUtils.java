@@ -1,7 +1,6 @@
 package com.csp;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +130,15 @@ public class FileUtils {
             }
         }
 
+    }
+
+    public static String getSuffix(File file){
+        String fileName = file.getName();
+        if (fileName.contains(".")){
+            return fileName.substring(fileName.lastIndexOf("."));
+        }else {
+            return "";
+        }
     }
 
 
