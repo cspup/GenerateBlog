@@ -1,9 +1,9 @@
 package com.csp;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author csp
@@ -51,10 +51,7 @@ public class CreatePage {
 
             String filePath = file.getPath().replaceAll("\\\\","/");
             String relativePath = filePath.replace(basePath,"");
-            Date date = new Date(file.lastModified());
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String lastUpdateTime = dateFormat.format(date);
-            String li = "<li><a href=\"./blog.html?path="+relativePath+"\">"+fileName+"--"+lastUpdateTime+"</a></li>";
+            String li = "<li><a href=\"./blog.html?path="+relativePath+"\">"+fileName+"</a></li>";
             contentStringBuilder.append(li).append(System.lineSeparator());
 
             System.out.println(relativePath);
