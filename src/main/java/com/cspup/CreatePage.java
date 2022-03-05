@@ -21,10 +21,11 @@ public class CreatePage {
      *
      * @param modelFile         模板文件
      * @param markDownDirectory markdown文件存放路径
-     * @param htmlPath          html存放地
+     * @param htmlDir          html存放地
      */
-    public static List<String> createHtml(String modelFile, String markDownDirectory, String htmlPath) throws IOException {
-        FileUtils.copyDirectory(new File(markDownDirectory), new File(htmlPath));
+    public static List<String> createHtml(String modelFile, String markDownDirectory, String htmlDir) throws IOException {
+        FileUtils.deleteDirectory(new File(htmlDir));
+        FileUtils.copyDirectory(new File(markDownDirectory), new File(htmlDir));
 
 //        markDownDirectory = htmlPath;
 
@@ -34,7 +35,7 @@ public class CreatePage {
         Md2Html md2Html = new Md2Html();
 
         List<File> fileList = new ArrayList<>();
-        FileUtil.getFileList(markDownDirectory, fileList);
+        FileUtil.getFileList(htmlDir, fileList);
 
         // 根据文件路径排序（由于md文件按日期分类其实是按日期排序）
         fileList.sort(Comparator.comparing(File::getPath).reversed());
