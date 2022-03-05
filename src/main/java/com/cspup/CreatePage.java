@@ -26,7 +26,7 @@ public class CreatePage {
     public static List<String> createHtml(String modelFile, String markDownDirectory, String htmlPath) throws IOException {
         FileUtils.copyDirectory(new File(markDownDirectory), new File(htmlPath));
 
-        markDownDirectory = htmlPath;
+//        markDownDirectory = htmlPath;
 
         List<String> blogs = new ArrayList<>();
 

@@ -42,7 +42,11 @@ public class Main {
         String blogHtmlDir = outDir + "/html";
         String blogModel = modelDir + "/model/blog.html";
 
-        FileUtils.copyDirectory(new File(modelDir + "/md"), new File(outDir + "/md"));
+        if (!new File(outDir + "/md").exists()){
+            FileUtils.copyDirectory(new File(modelDir + "/md"), new File(outDir + "/md"));
+        }
+
+
         FileUtils.copyDirectory(new File(modelDir + "/css"), new File(outDir + "/css"));
         FileUtils.copyDirectory(new File(modelDir + "/js"), new File(outDir + "/js"));
 
