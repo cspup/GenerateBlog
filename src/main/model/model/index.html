@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
@@ -23,6 +23,27 @@
     #blog-list li {
         padding: 5px;
     }
+
+    #pageBar {
+        /*border: 1px solid black;*/
+        margin: auto;
+        text-align: center;
+        bottom: 1px;
+    }
+
+    .pagination-item {
+        cursor: pointer;
+        height: 1rem;
+        width: 2rem;
+        /* border: 1px solid black; */
+        color: rgb(26, 25, 27);
+        margin-right: .5rem;
+        margin-left: .5rem;
+    }
+
+    .pagination-item-highlight {
+        color: red;
+    }
 </style>
 
 <body>
@@ -32,9 +53,98 @@
             {{blog-list}}
         </ul>
     </div>
+    <div id="pageBar">
+    </div>
 </div>
 </body>
 <script>
+    window.onload = () => {
+        init()
+    }
+
+    let nowPage = 1;
+    let blogCount = 0;
+
+    function init() {
+        const blog_list_ul = document.getElementById('blog-list');
+        const list = blog_list_ul.getElementsByTagName('li');
+        count = list.length;
+        createPageBar(count);
+        toPage(1)
+    }
+
+    function createPageBar(count) {
+        const pageBar = document.getElementById('pageBar')
+        // 上一页
+        const last = document.createElement('a')
+        last.innerHTML = '<-';
+        last.onclick = function () {
+            toPage(nowPage - 1)
+        }
+        last.className = 'pagination-item'
+        pageBar.appendChild(last)
+
+        for (i = 0; i < count / 10; i++) {
+            const item = document.createElement('a')
+            item.setAttribute('pageNum', i + 1)
+            item.innerHTML = i + 1;
+            const pageNum = i + 1;
+            item.onclick = function () {
+                toPage(pageNum)
+            }
+            item.className = 'pagination-item'
+            pageBar.appendChild(item)
+        }
+
+        // 下一页
+        const next = document.createElement('a')
+        next.innerHTML = '->';
+        next.onclick = function () {
+            toPage(nowPage + 1)
+        }
+        next.className = 'pagination-item'
+        pageBar.appendChild(next)
+
+    }
+
+    function toPage(pageNum) {
+        const blog_list_ul = document.getElementById('blog-list');
+        const list = blog_list_ul.getElementsByTagName('li');
+
+        if ((pageNum - 1) * 10 > list.length) {
+
+            nowPage = parseInt(list.length / 10)
+            return
+        }
+        if (pageNum <= 0) {
+            nowPage = 1
+            return
+        }
+        for (let i = 0; i < list.length; i++) {
+            if (i >= (pageNum - 1) * 10 && i < pageNum * 10) {
+                list[i].hidden = false;
+            } else {
+                list[i].hidden = true;
+            }
+        }
+        nowPage = pageNum
+        updateHighlightPageItem()
+
+    }
+
+    function updateHighlightPageItem() {
+
+        const pageBar = document.getElementById('pageBar')
+        const pageBarList = pageBar.getElementsByTagName('a');
+        for (let i = 0; i < pageBarList.length; i++) {
+            if (i === nowPage) {
+                pageBarList[i].className = pageBarList[nowPage].className + ' pagination-item-highlight'
+            } else {
+                pageBarList[i].className = pageBarList[nowPage].className.replace('pagination-item-highlight', '')
+            }
+        }
+
+    }
 </script>
 
 </html>
