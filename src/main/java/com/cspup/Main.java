@@ -13,6 +13,7 @@ import java.util.Properties;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        long startTime =  System.currentTimeMillis();
         Main main = new Main();
         Properties properties = new Properties();
 
@@ -53,7 +54,10 @@ public class Main {
         List<String> blogs = CreatePage.createHtml(blogModel, markDownDirectory, blogHtmlDir);
         CreatePage.updateIndexHtml(outDir, indexModel, indexOutFile, blogs);
 
+        long endTime =  System.currentTimeMillis();
+        long usedTime = (endTime-startTime);
 
+        System.out.println("USE TIME:"+usedTime+"ms");
     }
 
 }
