@@ -76,7 +76,7 @@ public class CreatePage {
             String fileName = file.getName();
             fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
             fileName = fileName.substring(0, fileName.lastIndexOf("."));
-            String li = "<li><a href=\"" + relativePath + "\">" + fileName + "</a></li>";
+            String li = "<li hidden><a href=\"" + relativePath + "\">" + fileName + "</a></li>";
             list.add(li);
         }
 
