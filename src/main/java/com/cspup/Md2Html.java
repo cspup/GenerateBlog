@@ -17,8 +17,7 @@ import java.util.List;
 public class Md2Html {
     public String toHtml(String md) {
         MutableDataSet options = new MutableDataSet();
-        options.set(Parser.EXTENSIONS, List.of(TablesExtension.create()));
-        options.set(Parser.EXTENSIONS, List.of(TocExtension.create()));
+        options.set(Parser.EXTENSIONS, List.of(TablesExtension.create(),TocExtension.create()));
         Parser parser = Parser.builder(options).build();
         HtmlRenderer renderer = HtmlRenderer.builder(options).build();
 
