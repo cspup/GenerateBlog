@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cspup</groupId>
     <artifactId>GenerateBlog</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>GenerateBlog</name>
     <description>生成静态博客</description>
 
