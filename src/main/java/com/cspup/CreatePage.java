@@ -90,5 +90,17 @@ public class CreatePage {
         FileUtil.write(newHtml, target, false);
     }
 
+    /**
+     * 增加ICP备案号
+     * @param indexModel 模板
+     * @param target 输出目录
+     * @param ICP ICP备案号
+     */
+    public static void updateICP(String indexModel, String target, String ICP){
+        String html = FileUtil.read(indexModel);
+        String newHtml = html.replace("{{ICP}}", ICP);
+        FileUtil.write(newHtml, target, false);
+    }
+
 
 }

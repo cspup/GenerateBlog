@@ -2,10 +2,8 @@ package com.cspup;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -23,9 +21,10 @@ public class Main {
         String runPath = String.valueOf(file.getParentFile());
 
         InputStream inputStream = new FileInputStream(runPath + File.separator + "config.properties");
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         try {
-            properties.load(inputStream);
+            properties.load(inputStreamReader);
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -34,6 +33,10 @@ public class Main {
         String modelDir = runPath + File.separator + "model";
 //        输出目录
         String outDir = properties.getProperty("outDir");
+
+//        ICP备案号
+        String ICP = properties.getProperty("ICP");
+
 
         System.out.println("Out Dir:"+outDir);
 
@@ -53,6 +56,10 @@ public class Main {
 
         List<String> blogs = CreatePage.createHtml(blogModel, markDownDirectory, blogHtmlDir);
         CreatePage.updateIndexHtml(outDir, indexModel, indexOutFile, blogs);
+
+        if (ICP!=null&&!ICP.isEmpty()){
+            CreatePage.updateICP(indexOutFile,indexOutFile,ICP);
+        }
 
         long endTime =  System.currentTimeMillis();
         long usedTime = (endTime-startTime);

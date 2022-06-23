@@ -42,7 +42,6 @@
         text-align: center;
         height: 5%;
     }
-
 </style>
 
 <body class="text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
@@ -57,7 +56,7 @@
     </div>
 
 </main>
-<!-- <footer><a href="https://beian.miit.gov.cn/">{{ICP}}</a></footer> -->
+ <footer><a href="https://beian.miit.gov.cn/">{{ICP}}</a></footer>
 </body>
 <script>
     window.onload = () => {
@@ -72,7 +71,12 @@
         const list = blog_list_ul.getElementsByTagName('li');
         count = list.length;
         createPageBar(count);
-        toPage(1)
+        const p = getQueryVariable("p")
+        if (p) {
+            nowPage = parseInt(p)
+        }
+
+        initPage(nowPage)
     }
 
     function createPageBar(count) {
@@ -81,7 +85,9 @@
         const last = document.createElement('a')
         last.innerHTML = '<-';
         last.onclick = function () {
-            toPage(nowPage - 1)
+            // initPage(nowPage - 1)
+            nowPage--
+            toPage(nowPage,count,10)
         }
         last.className = 'pagination-item'
         pageBar.appendChild(last)
@@ -92,7 +98,9 @@
             item.innerHTML = i + 1;
             const pageNum = i + 1;
             item.onclick = function () {
-                toPage(pageNum)
+                // initPage(pageNum)
+                nowPage = pageNum
+                toPage(nowPage,count,10)
             }
             item.className = 'pagination-item'
             pageBar.appendChild(item)
@@ -102,26 +110,22 @@
         const next = document.createElement('a')
         next.innerHTML = '->';
         next.onclick = function () {
-            toPage(nowPage + 1)
+            // initPage(nowPage + 1)
+            nowPage++
+            console.log(nowPage);
+            toPage(nowPage,count,10)
+
         }
         next.className = 'pagination-item'
         pageBar.appendChild(next)
 
     }
 
-    function toPage(pageNum) {
+    function initPage(pageNum) {
+
         const blog_list_ul = document.getElementById('blog-list');
         const list = blog_list_ul.getElementsByTagName('li');
 
-        if ((pageNum - 1) * 10 > list.length) {
-
-            nowPage = parseInt(list.length / 10)
-            return
-        }
-        if (pageNum <= 0) {
-            nowPage = 1
-            return
-        }
         for (let i = 0; i < list.length; i++) {
             if (i >= (pageNum - 1) * 10 && i < pageNum * 10) {
                 list[i].hidden = false;
@@ -129,13 +133,12 @@
                 list[i].hidden = true;
             }
         }
-        nowPage = pageNum
+
         updateHighlightPageItem()
 
     }
 
     function updateHighlightPageItem() {
-
         const pageBar = document.getElementById('pageBar')
         const pageBarList = pageBar.getElementsByTagName('a');
         for (let i = 0; i < pageBarList.length; i++) {
@@ -146,6 +149,52 @@
             }
         }
 
+    }
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    function setQueryVariable(key, value) {
+        var query = window.location.search.substring(1);
+        var newQuery = []
+        var flag = false
+        if (query.length > 0) {
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == key) {
+                    pair[1] = value
+                    flag = true
+                }
+                newQuery.push(pair[0] + '=' + pair[1])
+            }
+        }
+        if (!flag) {
+            newQuery.push(key + '=' + value)
+        }
+
+        window.location.search = newQuery.join('&')
+
+    }
+
+    function toPage(pageNum,count,pageSize) {
+        console.log(parseInt(count / pageSize));
+        if ((pageNum - 1) * pageSize > count) {
+            pageNum = parseInt(count / pageSize)+1
+        }
+        if (pageNum <= 0) {
+            pageNum = 1
+        }
+        setQueryVariable('p', pageNum)
     }
 </script>
 
